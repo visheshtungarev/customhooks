@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import "./styles.css";
+import React, { useState, useEffect } from "react";
+import useLoader from "./hooks/useLoader";
+export default function App() {
+  //a delay function
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-function App() {
+  const fetchAPI = async (ms) => {
+    console.log("this might take some time....");
+    await delay(ms);
+    console.log("Done!");
+  };
+  const fetchAPITWO = async (ms) => {
+    console.log("this might take some time....");
+    await delay(ms);
+
+    console.log("Done!");
+  };
+  const [getFetchOne, isLoading] = useLoader(fetchAPI);
+  const [getFecthTwo, isLoading2] = useLoader(fetchAPITWO);
+
+  useEffect(() => {
+    getFetchOne(4000);
+    getFecthTwo(2000);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <article className="d-flex flex-column my-2">
+        <h3 className="text-center">
+          Welcome to <span style={{ color: "#994433" }}>Code with Vish</span>
+        </h3>
+      </article>
+
+      <article className="d-flex flex-column">
+        <h4>{isLoading || isLoading2 ? "Loading..." : "Data Loaded"}</h4>
+      </article>
     </div>
   );
 }
-
-export default App;
